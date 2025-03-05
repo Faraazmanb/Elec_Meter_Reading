@@ -57,7 +57,7 @@ def predict(image_path, model_version="best"):
 # Example usage:
 if __name__ == "__main__":
     # Example image path (you can pass any image path here)
-    example_image_path = "/Users/mohammedhamdan/Desktop/finalyear/meter_reading_detection/a.jpg"
+    example_image_path = "/Users/mohammedhamdan/Desktop/finalyear/meter_reading_detection/b.jpg"
     if not os.path.exists(example_image_path):
         print(f"Image file not found: {example_image_path}")
     else:
