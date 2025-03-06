@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 from ultralytics import YOLO
 import logging
 import os
+from flask import Flask,render_template,request,send_from_directory
 
 # Set logging level to WARNING or ERROR to suppress lower-level logs
 logging.basicConfig(level=logging.WARNING)
 
-# Load the YOLO model (default to "best" model)
-model_path_best = "/Users/mohammedhamdan/Desktop/finalyear/meter_reading_detection/meter-reading-model-best.pt"
-model_path_last = "/Users/mohammedhamdan/Desktop/finalyear/meter_reading_detection/meter-reading-model-last.pt"
-default_model = YOLO(model_path_best)  # Default to "best" model
+model_path_best ="C:\\Users\\mdfar\\Downloads\\finalproj\\finalYearModel\\trainedmodel\\meter-reading-model-best.pt"
+model_path_last = "C:\\Users\\mdfar\\Downloads\\finalproj\\finalYearModel\\trainedmodel\\meter-reading-model-last.pt"
+default_model = YOLO(model_path_best)  
 print(f"Default model loaded from: {model_path_best}")
 
 
@@ -31,8 +31,8 @@ def predict(image_path, model_version="best"):
         # Select the appropriate model
         model_dir = model_path_last if model_version == "last" else model_path_best
         model = YOLO(model_dir)
-        print(f"Using model from: {model_dir}")
-        
+        # print(f"Using model from: {model_dir}")
+        print("Using CNN model digit_recognition_model.keras")
         # Perform prediction directly on the image
         print(f"Reading image from: {image_path}")
         result = model.predict(image_path)
@@ -54,12 +54,17 @@ def predict(image_path, model_version="best"):
         return {"error": str(e)}
 
 
-# Example usage:
+# Example usage for cnn_model.py:
 if __name__ == "__main__":
     # Example image path (you can pass any image path here)
-    example_image_path = "/Users/mohammedhamdan/Desktop/finalyear/meter_reading_detection/b.jpg"
+    example_image_path = "C:\\Users\\mdfar\\Downloads\\finalproj\\finalYearModel\\testdata\\images\\30_JPG.rf.56c6c7a52dd55089bb5511a4893a206c.jpg"
     if not os.path.exists(example_image_path):
         print(f"Image file not found: {example_image_path}")
+
+
+
+
+
     else:
         result = predict(example_image_path, model_version="best")
         print("Final Result:", result)
