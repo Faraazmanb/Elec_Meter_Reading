@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload and Predict</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #fff;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .container h1 {
+        background-color: #007bff;
+        color: #fff;
+        text-align: center;
+        margin: 0;
+        padding: 20px 10px;
+        font-size: 1.8rem;
+      }
+
+      .upload-section {
+        padding: 30px;
+        text-align: center;
+      }
+
+      .upload-box {
+        border: 2px dashed #007bff;
+        border-radius: 10px;
+        padding: 30px;
+        cursor: pointer;
+        background: #e9ecef;
+      }
+
+      .upload-box:hover {
+        background: #d4e8ff;
+      }
+
+      .upload-box input[type="file"] {
+        display: none;
+      }
+
+      .upload-box i {
+        font-size: 2rem;
+        color: #007bff;
+        margin-bottom: 10px;
+      }
+
+      .preview-section img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      .btn-send {
+        background-color: #007bff;
+        color: white;
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      .btn-send:hover {
+        background-color: #0056b3;
+      }
+
+      .progress-indicator {
+        margin-top: 20px;
+        display: none;
+      }
+
+      .progress-indicator p {
+        margin: 0;
+        font-weight: bold;
+        color: #007bff;
+      }
+
+      .result-section {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .error-msg {
+        color: #dc3545;
+        margin-top: 10px;
+      }
+
+      .success-msg {
+        color: #28a745;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Upload Image & Get Prediction</h1>
+      <div class="upload-section">
+        <div class="upload-box" id="upload_box">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Click or drag your image here to upload</p>
+          <input
+            type="file"
+            id="upload_file"
+            name="upload_file"
+            accept="image/*"
+          />
+        </div>
+        <div class="error-msg" id="error_msg"></div>
+        <div class="preview-section" id="preview_section" style="display: none">
+          <img id="uploaded_image" src="" alt="Uploaded Preview" />
+        </div>
+        <button id="send_button" class="btn-send" style="display: none">
+          Send
+        </button>
+        <div class="progress-indicator" id="progress">
+          <p>Processing...</p>
+        </div>
+        <div class="result-section" id="result_section" style="display: none">
+          <h2>Prediction Results</h2>
+          <p id="result_text"></p>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const uploadBox = document.getElementById("upload_box");
+        const uploadFile = document.getElementById("upload_file");
+        const errorMsg = document.getElementById("error_msg");
+        const previewSection = document.getElementById("preview_section");
+        const uploadedImage = document.getElementById("uploaded_image");
+        const sendButton = document.getElementById("send_button");
+        const progress = document.getElementById("progress");
+        const resultSection = document.getElementById("result_section");
+        const resultText = document.getElementById("result_text");
+
+        // Handle File Upload
+        uploadBox.addEventListener("click", () => uploadFile.click());
+        uploadFile.addEventListener("change", (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const fileURL = URL.createObjectURL(file);
+            uploadedImage.src = fileURL;
+            previewSection.style.display = "block";
+            sendButton.style.display = "inline-block";
+            errorMsg.textContent = ""; // Clear any previous error
+          } else {
+            errorMsg.textContent = "Please select a valid image file.";
+          }
+        });
+
+        // Handle Send Button Click
+        sendButton.addEventListener("click", async () => {
+          const file = uploadFile.files[0];
+          if (!file) {
+            errorMsg.textContent = "No file uploaded.";
+            return;
+          }
+
+          // Clear existing messages and show progress
+          errorMsg.textContent = "";
+          resultSection.style.display = "none";
+          progress.style.display = "block";
+
+          // Create FormData for upload
+          const formData = new FormData();
+          formData.append("upload_file", file);
+
+          try {
+            const response = await fetch("/upload", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to process the file.");
+            }
+
+            const data = await response.json();
+            if (data.error) {
+              throw new Error(data.error);
+            }
+
+            // Show the result
+            progress.style.display = "none";
+            resultText.textContent = `Prediction Result: ${data.prediction}`;
+            resultSection.style.display = "block";
+          } catch (error) {
+            progress.style.display = "none";
+            errorMsg.textContent = `Error: ${error.message}`;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

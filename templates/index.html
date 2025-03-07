@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="/static/logo.png" type="image/x-icon" />
+
+    <!--=============== REMIX ICONS ===============-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="/static/styles.css" />
+
+    <title>Automated Electricity Meter Reading</title>
+  </head>
+  <body>
+    <!--==================== HEADER ====================-->
+    <header class="header" id="header">
+      <nav class="nav container">
+        <!-- <a href="#" class="nav__logo">
+                    <img src="/static/logo.png" alt="">
+                </a> -->
+
+        <div style="display: flex">
+          <img class="img-logo" src="/static/logo_light.png" alt="" />
+          <p class="brand-name">FINAL YEAR PROJECT</p>
+        </div>
+
+        <div class="nav__menu" id="nav-menu">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="#home" class="nav__link active-link">Home</a>
+            </li>
+            <li class="nav__item">
+              <a href="#about" class="nav__link">About</a>
+            </li>
+            <li class="nav__item">
+              <a href="#products" class="nav__link">Products</a>
+            </li>
+            <li class="nav__item">
+              <a href="#faqs" class="nav__link">FAQs</a>
+            </li>
+            <li class="nav__item">
+              <a href="#demo" class="nav__link">Demo</a>
+            </li>
+          </ul>
+          <!-- 
+                    <div class="nav__close" id="nav-close">
+                        <i class="ri-close-line"></i>
+                    </div> -->
+        </div>
+        <div class="model-upload nav__link nav__item">
+          <button
+            onclick="window.location.href='/model'"
+            class="model-upload-btn"
+          >
+            Try Our Model
+          </button>
+        </div>
+
+        <div class="nav__btns">
+          <!-- Theme change button -->
+          <i class="ri-moon-line change-theme" id="theme-button"></i>
+
+          <div class="nav__toggle" id="nav-toggle">
+            <i class="ri-menu-line"></i>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="main">
+      <!--==================== HOME ====================-->
+      <section class="home" id="home">
+        <div class="home__container container grid">
+          <img
+            style="width: 30rem; height: 30rem"
+            src="/static/image.png"
+            alt=""
+            class="home__img"
+          />
+
+          <div class="home__data">
+            <h1 class="home__title">
+              Automated Electricity <br />
+              Bill Reading
+            </h1>
+            <h1 class="home__description">Capture And Calculate</h1>
+            <a href="#about" class="button button--flex">
+              Explore <i class="ri-arrow-right-down-line button__icon"></i>
+            </a>
+          </div>
+
+          <div class="home__social">
+            <span class="home__social-follow">Follow Us</span>
+
+            <div class="home__social-links">
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                class="home__social-link"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                class="home__social-link"
+              >
+                <i class="ri-instagram-line"></i>
+              </a>
+              <a
+                href="https://twitter.com/"
+                target="_blank"
+                class="home__social-link"
+              >
+                <i class="ri-twitter-fill"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--==================== ABOUT ====================-->
+      <section class="about section container" id="about">
+        <div class="about__container grid">
+          <img src="/static/section1.jpg" alt="" class="about__img" />
+
+          <div class="about__data">
+            <h2 class="section__title about__title">Who we really are?</h2>
+
+            <p class="about__description">
+              Final Year AI & DS Students Trying <br />
+              to make the world a better place.
+            </p>
+
+            <a href="#" class="button--link button--flex">
+              Try Our Model<i class="ri-arrow-right-down-line button__icon"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!--==================== STEPS ====================-->
+      <section class="steps section container">
+        <div class="steps__bg">
+          <h2 class="section__title-center steps__title">
+            Steps to estimate Meter Reading <br />
+            and Calculate Charges
+          </h2>
+
+          <div class="steps__container grid">
+            <div class="steps__card">
+              <div class="steps__card-number">01</div>
+              <h3 class="steps__card-title">Upload Satellite Image</h3>
+              <p class="steps__card-description">
+                Provide a high-resolution image of your Meter Reading We'll
+                identify the Numbers
+                <br />
+                and Update to the TNEB Portal
+              </p>
+            </div>
+
+            <div class="steps__card">
+              <div class="steps__card-number">02</div>
+              <h3 class="steps__card-title">
+                Receive Previous Month Results Results
+              </h3>
+              <p class="steps__card-description">
+                We'll Present a Dashboard which will Contain the Analytics.
+              </p>
+            </div>
+
+            <div class="steps__card">
+              <div class="steps__card-number">03</div>
+              <h3 class="steps__card-title">Pay Your Bill Through Stripe</h3>
+              <p class="steps__card-description">
+                Use our recommendations to plan Effective Readings, including
+                the number of Appliances and their uses.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--==================== PRODUCTS ====================-->
+      <section class="product section container" id="products">
+        <p class="product__description">
+          We're developing a machine learning model that analyzes meter Reading
+          Images to predict CO2 emissions. The model then offers tailored
+          recommendations for reducing emissions.
+        </p>
+
+        <div class="product__container grid">
+          <article class="product__card">
+            <div class="product__circle"></div>
+
+            <img src="/static/Satellite.jpeg" alt="" class="product__img" />
+
+            <h3 class="product__title">Satellite Image</h3>
+
+            <!-- <button class="button--flex product__button">
+                            <i class="ri-shopping-bag-line"></i>
+                        </button> -->
+          </article>
+
+          <article class="product__card">
+            <div class="product__circle"></div>
+
+            <img src="/static/boundingbox.jpeg" alt="" class="product__img" />
+
+            <h3 class="product__title">Bounding</h3>
+
+            <!-- <button class="button--flex product__button">
+                            <i class="ri-shopping-bag-line"></i>
+                        </button> -->
+          </article>
+
+          <article class="product__card">
+            <div class="product__circle"></div>
+
+            <img
+              src="/static/imagesegmentation.jpeg"
+              alt=""
+              class="product__img"
+            />
+
+            <h3 class="product__title">Image Segmentation</h3>
+            <!-- <span class="product__price">$7.99</span> -->
+
+            <!-- <button class="button--flex product__button">
+                            <i class="ri-shopping-bag-line"></i>
+                        </button> -->
+          </article>
+        </div>
+      </section>
+
+      <!--==================== QUESTIONS ====================-->
+
+      <!--==================== CONTACT ====================-->
+    </main>
+
+    <!--==================== FOOTER ====================-->
+    <footer class="footer section">
+      <div class="footer__container container grid">
+        <div class="footer__content">
+          <a href="#" class="footer__logo">
+            <i class="ri-leaf-line footer__logo-icon"></i> Meter Reading
+          </a>
+
+          <h3 class="footer__title">
+            HAVE ANY QUERIES <br />
+            CONNECT WITH US
+          </h3>
+
+          <div class="footer__subscribe">
+            <input
+              type="email"
+              placeholder="Your email"
+              class="footer__input"
+            />
+
+            <button class="button button--flex footer__button">
+              Connect
+              <i class="ri-arrow-right-up-line button__icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer__content">
+          <h3 class="footer__title">Team Members</h3>
+
+          <ul class="footer__data">
+            <li class="footer__information">Mohammed Faraazman bin Farooq</li>
+            <li class="footer__information">Mohammed Hamdan</li>
+          </ul>
+        </div>
+
+        <div class="footer__content">
+          <h3 class="footer__title">Contact Us</h3>
+
+          <ul class="footer__data">
+            <li class="footer__information">+91 9150984174</li>
+
+            <div class="footer__social">
+              <a href="https://www.facebook.com/" class="footer__social-link">
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a href="https://www.instagram.com/" class="footer__social-link">
+                <i class="ri-instagram-line"></i>
+              </a>
+              <a href="https://twitter.com/" class="footer__social-link">
+                <i class="ri-twitter-fill"></i>
+              </a>
+            </div>
+          </ul>
+        </div>
+
+        <!-- <div class="footer__content">
+                    <h3 class="footer__title">
+                        We accept all credit cards
+                    </h3>
+
+                    <div class="footer__cards">
+                        <img src="assets/img/card1.png" alt="" class="footer__card">
+                        <img src="assets/img/card2.png" alt="" class="footer__card">
+                        <img src="assets/img/card3.png" alt="" class="footer__card">
+                        <img src="assets/img/card4.png" alt="" class="footer__card">
+                    </div>
+                </div> -->
+      </div>
+
+      <p class="footer__copy">&#169; Meter Reading. All rigths reserved</p>
+    </footer>
+
+    <!--=============== SCROLL UP ===============-->
+    <a href="#" class="scrollup" id="scroll-up">
+      <i class="ri-arrow-up-fill scrollup__icon"></i>
+    </a>
+
+    <!--=============== SCROLL REVEAL ===============-->
+    <script src="/static/scrollreveal.min.js"></script>
+
+    <!--=============== MAIN JS ===============-->
+    <script src="/static/main.js"></script>
+  </body>
+</html>
