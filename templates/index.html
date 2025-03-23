@@ -27,8 +27,7 @@
                 </a> -->
 
         <div style="display: flex">
-          <img class="img-logo" src="/static/logo_light.png" alt="" />
-          <p class="brand-name">FINAL YEAR PROJECT</p>
+          <img class="img-logo" src="/static/eleec.png" alt="" />
         </div>
 
         <div class="nav__menu" id="nav-menu">
@@ -65,6 +64,9 @@
 
         <div class="nav__btns">
           <!-- Theme change button -->
+          <button onclick="window.location.href='/logout'" class="logout-btn">
+            Logout
+          </button>
           <i class="ri-moon-line change-theme" id="theme-button"></i>
 
           <div class="nav__toggle" id="nav-toggle">
@@ -125,39 +127,43 @@
           </div>
         </div>
       </section>
+      
+
+
 
       <!--==================== ABOUT ====================-->
       <section class="about section container" id="about">
         <div class="about__container grid">
-          <img src="/static/section1.jpg" alt="" class="about__img" />
+          <img src="/static/elecpicproj.png" alt="" class="about__img" />
 
           <div class="about__data">
             <h2 class="section__title about__title">Who we really are?</h2>
 
             <p class="about__description">
-              Final Year AI & DS Students Trying <br />
-              to make the world a better place.
+              <b>Final Year B.Tech AI & DS Students of <b>B.S.Abdur Rahman Crescent University<b> Trying
+              to digitalize India.<b>
             </p>
 
-            <a href="#" class="button--link button--flex">
+            <a href="/model" class="button--link button--flex">
               Try Our Model<i class="ri-arrow-right-down-line button__icon"></i>
             </a>
           </div>
         </div>
       </section>
 
+      
       <!--==================== STEPS ====================-->
       <section class="steps section container">
         <div class="steps__bg">
           <h2 class="section__title-center steps__title">
-            Steps to estimate Meter Reading <br />
+            Steps to Get Meter Reading <br />
             and Calculate Charges
           </h2>
 
           <div class="steps__container grid">
             <div class="steps__card">
               <div class="steps__card-number">01</div>
-              <h3 class="steps__card-title">Upload Satellite Image</h3>
+              <h3 class="steps__card-title">Upload Meter Image</h3>
               <p class="steps__card-description">
                 Provide a high-resolution image of your Meter Reading We'll
                 identify the Numbers
@@ -191,53 +197,10 @@
       <!--==================== PRODUCTS ====================-->
       <section class="product section container" id="products">
         <p class="product__description">
-          We're developing a machine learning model that analyzes meter Reading
-          Images to predict CO2 emissions. The model then offers tailored
-          recommendations for reducing emissions.
+          We're developing a machine learning model that captures the
+          Electricity Meter Images and preproceses and detects the reading. The
+          model then offers tailored recommendations for reducing consumption.
         </p>
-
-        <div class="product__container grid">
-          <article class="product__card">
-            <div class="product__circle"></div>
-
-            <img src="/static/Satellite.jpeg" alt="" class="product__img" />
-
-            <h3 class="product__title">Satellite Image</h3>
-
-            <!-- <button class="button--flex product__button">
-                            <i class="ri-shopping-bag-line"></i>
-                        </button> -->
-          </article>
-
-          <article class="product__card">
-            <div class="product__circle"></div>
-
-            <img src="/static/boundingbox.jpeg" alt="" class="product__img" />
-
-            <h3 class="product__title">Bounding</h3>
-
-            <!-- <button class="button--flex product__button">
-                            <i class="ri-shopping-bag-line"></i>
-                        </button> -->
-          </article>
-
-          <article class="product__card">
-            <div class="product__circle"></div>
-
-            <img
-              src="/static/imagesegmentation.jpeg"
-              alt=""
-              class="product__img"
-            />
-
-            <h3 class="product__title">Image Segmentation</h3>
-            <!-- <span class="product__price">$7.99</span> -->
-
-            <!-- <button class="button--flex product__button">
-                            <i class="ri-shopping-bag-line"></i>
-                        </button> -->
-          </article>
-        </div>
       </section>
 
       <!--==================== QUESTIONS ====================-->
@@ -249,9 +212,7 @@
     <footer class="footer section">
       <div class="footer__container container grid">
         <div class="footer__content">
-          <a href="#" class="footer__logo">
-            <i class="ri-leaf-line footer__logo-icon"></i> Meter Reading
-          </a>
+          <a href="#" class="footer__logo"> <i></i> Meter Reading </a>
 
           <h3 class="footer__title">
             HAVE ANY QUERIES <br />

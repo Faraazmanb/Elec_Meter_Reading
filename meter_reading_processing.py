@@ -7,12 +7,13 @@ from tensorflow.keras.datasets import mnist
 
 # Function to train and save the digit recognition model
 def train_and_save_model():
-    # Load the MNIST dataset
-    (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+    # Load the METER dataset
+    (train_images, train_labels), (test_images, test_labels) = load_data("C:\Users\mdfar\Downloads\finalproj\finalYearModel\trainedmodel")
 
     # Preprocess the images
     train_images = train_images.reshape((train_images.shape[0], 28, 28, 1)).astype('float32') / 255
     test_images = test_images.reshape((test_images.shape[0], 28, 28, 1)).astype('float32') / 255
+
 
     # Build the model
     model = models.Sequential([
@@ -30,7 +31,7 @@ def train_and_save_model():
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
     # Train the model
-    model.fit(train_images, train_labels, epochs=5, validation_data=(test_images, test_labels))
+    model.fit(train_images, train_labels, epochs=50, validation_data=(test_images, test_labels))
 
     # Save the model with the recommended format
     model.save('digit_recognition_model.keras')
@@ -40,8 +41,7 @@ def train_and_save_model():
 def load_model():
     return tf.keras.models.load_model('digit_recognition_model.keras')
 
-# Function to predict the digit from an image
-# Function to predict the digit from an image
+
 def predict_digit(image):
     model = load_model()
     

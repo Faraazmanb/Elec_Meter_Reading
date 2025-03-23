@@ -36,6 +36,8 @@
         margin: 0;
         padding: 20px 10px;
         font-size: 1.8rem;
+        margin-top: 12px;
+        border-radius: 5px;
       }
 
       .upload-section {
@@ -43,148 +45,76 @@
         text-align: center;
       }
 
-      .upload-box {
-        border: 2px dashed #007bff;
-        border-radius: 10px;
-        padding: 30px;
-        cursor: pointer;
-        background: #e9ecef;
-      }
-
-      .upload-box:hover {
-        background: #d4e8ff;
-      }
-
-      .upload-box input[type="file"] {
-        display: none;
-      }
-
-      .upload-box i {
-        font-size: 2rem;
-        color: #007bff;
-        margin-bottom: 10px;
-      }
-
-      .preview-section img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 10px;
-        margin-top: 20px;
-      }
-
-      .btn-send {
-        background-color: #007bff;
-        color: white;
-        font-size: 1.2rem;
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        margin-top: 20px;
-      }
-
-      .btn-send:hover {
-        background-color: #0056b3;
-      }
-
-      .progress-indicator {
-        margin-top: 20px;
-        display: none;
-      }
-
-      .progress-indicator p {
-        margin: 0;
-        font-weight: bold;
-        color: #007bff;
-      }
-
       .result-section {
         text-align: center;
         margin-top: 20px;
       }
 
-      .error-msg {
-        color: #dc3545;
+      .consumption-section,
+      .accuracy-section {
+        text-align: center;
         margin-top: 10px;
+        font-weight: bold;
       }
 
-      .success-msg {
+      .consumption-section {
+        color: #17a2b8;
+      }
+
+      .accuracy-section {
         color: #28a745;
-        margin-top: 10px;
       }
     </style>
   </head>
   <body>
+    <br />
+
     <div class="container">
       <h1>Upload Image & Get Prediction</h1>
       <div class="upload-section">
-        <div class="upload-box" id="upload_box">
-          <i class="fas fa-cloud-upload-alt"></i>
-          <p>Click or drag your image here to upload</p>
-          <input
-            type="file"
-            id="upload_file"
-            name="upload_file"
-            accept="image/*"
-          />
-        </div>
-        <div class="error-msg" id="error_msg"></div>
-        <div class="preview-section" id="preview_section" style="display: none">
-          <img id="uploaded_image" src="" alt="Uploaded Preview" />
-        </div>
-        <button id="send_button" class="btn-send" style="display: none">
-          Send
-        </button>
-        <div class="progress-indicator" id="progress">
+        <input type="file" id="upload_file" accept="image/*" />
+        <button id="send_button" class="btn btn-primary mt-3">Send</button>
+        <div class="progress-indicator" id="progress" style="display: none">
           <p>Processing...</p>
         </div>
         <div class="result-section" id="result_section" style="display: none">
           <h2>Prediction Results</h2>
           <p id="result_text"></p>
+          <div
+            class="accuracy-section"
+            id="accuracy_section"
+            style="display: none"
+          >
+            <p>Accuracy: <span id="accuracy_value"></span>%</p>
+          </div>
+          <div
+            class="consumption-section"
+            id="consumption_section"
+            style="display: none"
+          >
+            <p>Consumption: <span id="consumption_value"></span></p>
+          </div>
+          <div
+            class="charges-section"
+            id="charges_section"
+            style="display: none"
+          >
+            <p>Charges: <span id="charges_value"></span></p>
+          </div>
         </div>
       </div>
     </div>
+
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const uploadBox = document.getElementById("upload_box");
-        const uploadFile = document.getElementById("upload_file");
-        const errorMsg = document.getElementById("error_msg");
-        const previewSection = document.getElementById("preview_section");
-        const uploadedImage = document.getElementById("uploaded_image");
-        const sendButton = document.getElementById("send_button");
-        const progress = document.getElementById("progress");
-        const resultSection = document.getElementById("result_section");
-        const resultText = document.getElementById("result_text");
+      document
+        .getElementById("send_button")
+        .addEventListener("click", async () => {
+          const file = document.getElementById("upload_file").files[0];
+          if (!file) return alert("Please upload a file first.");
 
-        // Handle File Upload
-        uploadBox.addEventListener("click", () => uploadFile.click());
-        uploadFile.addEventListener("change", (event) => {
-          const file = event.target.files[0];
-          if (file) {
-            const fileURL = URL.createObjectURL(file);
-            uploadedImage.src = fileURL;
-            previewSection.style.display = "block";
-            sendButton.style.display = "inline-block";
-            errorMsg.textContent = ""; // Clear any previous error
-          } else {
-            errorMsg.textContent = "Please select a valid image file.";
-          }
-        });
+          document.getElementById("progress").style.display = "block";
+          document.getElementById("result_section").style.display = "none";
 
-        // Handle Send Button Click
-        sendButton.addEventListener("click", async () => {
-          const file = uploadFile.files[0];
-          if (!file) {
-            errorMsg.textContent = "No file uploaded.";
-            return;
-          }
-
-          // Clear existing messages and show progress
-          errorMsg.textContent = "";
-          resultSection.style.display = "none";
-          progress.style.display = "block";
-
-          // Create FormData for upload
           const formData = new FormData();
           formData.append("upload_file", file);
 
@@ -193,26 +123,40 @@
               method: "POST",
               body: formData,
             });
-
-            if (!response.ok) {
-              throw new Error("Failed to process the file.");
-            }
-
             const data = await response.json();
-            if (data.error) {
-              throw new Error(data.error);
+
+            document.getElementById("progress").style.display = "none";
+            document.getElementById(
+              "result_text"
+            ).textContent = `Prediction: ${data.prediction}`;
+            document.getElementById("result_section").style.display = "block";
+
+            if (data.accuracy !== undefined) {
+              document.getElementById("accuracy_value").textContent =
+                data.accuracy;
+              document.getElementById("accuracy_section").style.display =
+                "block";
             }
 
-            // Show the result
-            progress.style.display = "none";
-            resultText.textContent = `Prediction Result: ${data.prediction}`;
-            resultSection.style.display = "block";
+            if (data.consumption) {
+              const consumptionValue = parseFloat(data.consumption).toFixed(2);
+              document.getElementById("consumption_value").textContent =
+                consumptionValue;
+              document.getElementById("consumption_section").style.display =
+                "block";
+            }
+
+            if (data.charges) {
+              document.getElementById("charges_value").textContent =
+                data.charges;
+              document.getElementById("charges_section").style.display =
+                "block";
+            }
           } catch (error) {
-            progress.style.display = "none";
-            errorMsg.textContent = `Error: ${error.message}`;
+            document.getElementById("progress").style.display = "none";
+            alert("Error processing file.");
           }
         });
-      });
     </script>
   </body>
 </html>

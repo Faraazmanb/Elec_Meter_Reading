@@ -1,37 +1,114 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
+from flask_pymongo import PyMongo
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from PIL import Image
 import io
 import os
-from prediction_algo import predict  # Import your prediction function
+from dotenv import load_dotenv
+# Import your prediction function
+from prediction_algo import predict
+load_dotenv()
 import matplotlib
-
 matplotlib.use('agg')  # Use a non-interactive backend for Matplotlib
 
 # Initialize Flask app
-app = Flask(__name__, static_url_path='/static')  # Static file handling
-UPLOAD_FOLDER = os.path.join(app.root_path, 'uploads')
+app = Flask(__name__)
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")  # Get URI from .env
 
-# Ensure the upload folder exists
+mongo = PyMongo(app)
+db = mongo.db  # Get the database object
+users_collection = db.users  # Example collection
+UPLOAD_FOLDER = os.path.join(app.root_path, 'uploads')
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# Index route
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+app.secret_key = os.getenv("SECRET_KEY")
+
+# User model for Flask-Login
+class User(UserMixin):
+    def __init__(self, user_id):
+        self.id = user_id
+
+@login_manager.user_loader
+def load_user(user_id):
+    user = mongo.db.users.find_one({"_id": user_id})
+    if user:
+        return User(user_id)
+    return None
+
+# Home Page
 @app.route('/')
 def index():
+    session.clear() 
+    return render_template('loginreg.html')
+
+@app.route('/index')
+def indexx():
     return render_template('index.html')
 
-# Model upload page route
+# Model Page
 @app.route('/model')
 def model():
     product_description = "This is the product description from the backend."
     return render_template('upload.html', product_description=product_description)
 
+# Register Route
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        if mongo.db.users.find_one({"_id": username}):
+            flash("Username already exists!", "error")
+            return redirect(url_for('register'))
+        
+        hashed_password = generate_password_hash(password)
+        mongo.db.users.insert_one({"_id": username, "password": hashed_password})
+        
+        flash("Registration successful! Please login.", "success")
+        return redirect(url_for('login'))
+    
+    return render_template('loginreg.html')
+
+# Login Route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        user = mongo.db.users.find_one({"_id": username})
+        if user and check_password_hash(user["password"], password):
+            login_user(User(username))
+            flash("Login successful!", "success")
+            return redirect(url_for('indexx'))
+        else:
+            flash("Invalid username or password.", "error")
+            return redirect(url_for('login'))
+    
+    return render_template('loginreg.html')
+
+# Logout Route
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+# Dashboard (Protected Page)
+# @app.route('/index')
+# @login_required
+# def dashboard():
+#     return f"Welcome, {current_user.id}! <a href='/logout'>Logout</a>"
+
 # File upload route
 @app.route('/upload', methods=['POST'])
+@login_required
 def upload_file():
-    """
-    Handles file upload, processes the image, and returns a prediction result.
-    """
     try:
         if 'upload_file' not in request.files:
             app.logger.error("No file uploaded.")
@@ -71,12 +148,11 @@ def upload_file():
         app.logger.error(f"Error processing file: {e}")
         return jsonify({"error": f"Failed to process file: {str(e)}"}), 500
 
-# Predict route (alternative)
+
+# Predict route
 @app.route('/predict', methods=['POST'])
+@login_required
 def predict_image():
-    """
-    Endpoint to handle image uploads and perform prediction.
-    """
     if 'image' not in request.files:
         return jsonify({"error": "No image file provided"}), 400
 
